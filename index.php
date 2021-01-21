@@ -15,6 +15,7 @@
 get_header();
 ?>
 
+	<div id="content" class="site-content">
 	<main id="primary" class="site-main">
 
 		<?php
@@ -41,7 +42,11 @@ get_header();
 
 			endwhile;
 
-			the_posts_navigation();
+			the_posts_pagination( array(
+				'prev_text' => __( 'Newer', 'humescores' ),
+				'next_text' => __( 'Older', 'humescores' ),
+				'before_page_number' => '<span class="screen-reader-text">' . __( 'Page', 'humescores' ) . '</span>',
+			) );
 
 		else :
 
@@ -54,4 +59,9 @@ get_header();
 
 <?php
 get_sidebar();
+?>
+
+</div><!-- #content -->
+
+<?php
 get_footer();

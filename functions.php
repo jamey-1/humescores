@@ -47,6 +47,7 @@ if ( ! function_exists( 'humescores_setup' ) ) :
 		 */
 		add_theme_support( 'post-thumbnails' );
 		add_image_size( 'humescores-full-bleed', 2000, 1200, true );
+		add_image_size( 'humescores-index-img', 800, 450, true );
 
 		// This theme uses wp_nav_menu() in one location.
 		// Add footer menu.
@@ -221,6 +222,17 @@ function humescores_widgets_init() {
 			'name'          => esc_html__( 'Sidebar', 'humescores' ),
 			'id'            => 'sidebar-1',
 			'description'   => esc_html__( 'Add widgets here.', 'humescores' ),
+			'before_widget' => '<section id="%1$s" class="widget %2$s">',
+			'after_widget'  => '</section>',
+			'before_title'  => '<h2 class="widget-title">',
+			'after_title'   => '</h2>',
+		)
+	);
+	register_sidebar(
+		array(
+			'name'          => esc_html__( 'Footer Widgets', 'humescores' ),
+			'id'            => 'footer-1',
+			'description'   => esc_html__( 'Add footer widgets here.', 'humescores' ),
 			'before_widget' => '<section id="%1$s" class="widget %2$s">',
 			'after_widget'  => '</section>',
 			'before_title'  => '<h2 class="widget-title">',

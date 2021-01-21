@@ -11,7 +11,13 @@
 
 ?>
 
+	<?php
+	get_sidebar("footer");
+	?>
+
 	<footer id="colophon" class="site-footer">
+		
+
 		<nav class="social-menu">
 		<?php
 			wp_nav_menu(
