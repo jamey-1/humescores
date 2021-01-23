@@ -25,6 +25,11 @@ function humescores_body_classes( $classes ) {
 		$classes[] = 'has-sidebar';
 	}
 
+	// Adds a class telling us if the page sidebar is in use.
+	if ( is_active_sidebar( 'sidebar-2' ) ) {
+		$classes[] = 'has-page-sidebar';
+	}
+
 	return $classes;
 }
 add_filter( 'body_class', 'humescores_body_classes' );
