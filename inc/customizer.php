@@ -39,6 +39,40 @@ function humescores_customize_register( $wp_customize ) {
 		)
 	);
 
+	// Add option to select index content
+	$wp_customize->add_section( 'theme_options', 
+		array(
+			'title'			=> __( 'Theme Options', 'humescores' ),
+			'priority'		=> 95,
+			'capability'	=> 'edit_theme_options',
+			'description'	=> __( 'Change how much of a post is displayed on index and archive pages.', 'humescores' )
+		)
+	);
+	
+	// Create excerpt or full content settings
+	$wp_customize->add_setting(	'length_setting',
+		array(
+			'default'			=> 'excerpt',
+			'type'				=> 'theme_mod',
+			'sanitize_callback' => 'humescores_sanitize_length', // Sanitization function appears further down
+			'transport'			=> 'postMessage'
+		)
+	);
+
+	// Add the controls
+	$wp_customize->add_control(	'humescores_length_control',
+		array(
+			'type'		=> 'radio',
+			'label'		=> __( 'Index/archive displays', 'humescores' ),
+			'section'	=> 'theme_options',
+			'choices'	=> array(
+				'excerpt'		=> __( 'Excerpt (default)', 'humescores' ),
+				'full-content'	=> __( 'Full content', 'humescores' )
+			),
+			'settings'	=> 'length_setting' // Matches setting ID from above
+		)
+	);
+
 
 	if ( isset( $wp_customize->selective_refresh ) ) {
 		$wp_customize->selective_refresh->add_partial(
@@ -86,6 +120,22 @@ function humescores_customize_preview_js() {
 add_action( 'customize_preview_init', 'humescores_customize_preview_js' );
 
 
+
+/**
+ * Sanitize length options:
+ * If something goes wrong and one of the two specified options are not used,
+ * apply the default (excerpt).
+ */
+
+function humescores_sanitize_length( $value ) {
+    if ( ! in_array( $value, array( 'excerpt', 'full-content' ) ) ) {
+        $value = 'excerpt';
+	}
+    return $value;
+}
+
+
+
 if ( ! function_exists( 'humescores_header_style' ) ) :
 	/**
 	 * Styles the header image and text displayed on the blog.
@@ -110,7 +160,9 @@ if ( ! function_exists( 'humescores_header_style' ) ) :
 			if ( ! display_header_text() ) :
 				?>
 				.site-title,
-				.site-description {
+				.site-description,
+				.main-navigation a,
+				button.dropdown-toggle {
 					position: absolute;
 					clip: rect(1px, 1px, 1px, 1px);
 					}
@@ -119,7 +171,9 @@ if ( ! function_exists( 'humescores_header_style' ) ) :
 			else :
 				?>
 				.site-title a,
-				.site-description {
+				.site-description,
+				.main-navigation a,
+				button.dropdown-toggle {
 					color: #<?php echo esc_attr( $header_text_color ); ?>;
 				}
 			<?php endif; ?>
